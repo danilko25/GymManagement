@@ -49,3 +49,22 @@ class User(auth_models.AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    price = models.FloatField()
+    type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"User: {self.user.email}, start_date: {self.start_date}, end_date: {self.end_date}, price: {self.price}, type:{self.type}"
+
+
+
+class Visit(models.Model):
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"fSubscription:{self.subscription.id}, date:{self.date}"
