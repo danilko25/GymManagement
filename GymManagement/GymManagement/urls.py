@@ -16,8 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+
 from subscriptions.views import RegisterUser, SubscriptionDetail, SubscriptionList, VisitList, VisitDetail, UserList, \
     VisitListForSubscription, UserDetail
+
+schema_view = get_schema_view(openapi.Info(
+      title="GymManagement API",
+      default_version='v1',
+      description="Test description",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +41,8 @@ urlpatterns = [
     path('visits/<int:pk>', VisitDetail.as_view(), name="visits"),
     path('users/', UserList.as_view(), name="users"),
     path('users/<int:pk>', UserDetail.as_view(), name="users"),
-    path('subscriptions/<int:pk>/visits', VisitListForSubscription.as_view(), name="subscription-visits")
-
+    path('subscriptions/<int:pk>/visits', VisitListForSubscription.as_view(), name="subscription-visits"),
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
