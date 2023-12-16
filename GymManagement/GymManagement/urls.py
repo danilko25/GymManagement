@@ -16,7 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from subscriptions.views import RegisterUser, SubscriptionDetail, SubscriptionList, VisitList, VisitDetail, UserList, \
+    VisitListForSubscription, UserDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("register/", RegisterUser.as_view(), name="register"),
+    path("subscriptions/", SubscriptionList.as_view(), name="subscriptions"),
+    path('subscriptions/<int:pk>', SubscriptionDetail.as_view(), name="subscriptions"),
+    path("visits/", VisitList.as_view(), name="visits"),
+    path('visits/<int:pk>', VisitDetail.as_view(), name="visits"),
+    path('users/', UserList.as_view(), name="users"),
+    path('users/<int:pk>', UserDetail.as_view(), name="users"),
+    path('subscriptions/<int:pk>/visits', VisitListForSubscription.as_view(), name="subscription-visits")
+
 ]
